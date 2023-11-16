@@ -196,6 +196,19 @@ class Game {
 
                     return false; // player gets another turn
                 }
+
+                if (this.isQuartet()) {
+                    console.log("Quartet formed! Clearing the pile and player gets another turn.");
+                    this.playedCardsDeck = []; // Clear the pile
+                    this.lastPlayedCard = null;
+
+                    if (currentPlayer.hand.length === 0) {
+                        return this.checkPlayerWin(currentPlayer); // Check if the game is over
+                    }
+
+                    return false; // Player gets another turn
+                }
+
                 return true;
             } else {
                 console.log("Invalid play. Card returned to hand.");
@@ -206,6 +219,15 @@ class Game {
             console.log("Invalid card index.");
             return false; // Player can attempt another action
         }
+    }
+
+    isQuartet() {
+        if (this.playedCardsDeck.length < 4) {
+            return false;
+        }
+
+        const lastFourCards = this.playedCardsDeck.slice(-4);
+        return lastFourCards.every(card => card.value === lastFourCards[0].value);
     }
 
 
